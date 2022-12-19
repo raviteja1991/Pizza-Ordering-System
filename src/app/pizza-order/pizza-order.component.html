@@ -1,183 +1,188 @@
-<!-- <div class="content" role="main">
-  <div class="card-container">
-    <a class="card" target="_blank" rel="noopener" href="">
-      <span>Temp</span>
-    </a>
-  </div>
-</div> -->
-
 <div class="content" role="main">
-  <div style="margin-left: 600px;">
-    <table class="table table-bordered" style="width: 95%;">
-      <thead>
-        <tr>
-          <th scope="col">
-            Toppings
-          </th>
-          <th scope="col" style="border-right: white; align-self: center;">
-            Pizza Size
-          </th>
-        </tr>
-        <tr>
-          <th></th>
-          <th scope="col ">Small ({{sizeOfPizza.small.price | currency:'USD' }})
-            <div class="btns">
-              <button type="button" class="btn btn-sm bg-transparent" data-type="remove" data-field="small"
-                (click)="addToCart($event)">
-                -
-              </button>
-              <input type="text" name="small" style="width:15px" class="" value="0" min="0" max="1">
-              <button type="button" class="btn btn-sm bg-transparent" data-type="add" data-field="small"
-                (click)="addToCart($event)">
-                +
-              </button>
-            </div>
-          </th>
-          <th scope="col ">Medium ({{sizeOfPizza.medium.price | currency:'USD' }})
-            <div class="btns">
-              <button type="button" class="btn btn-sm bg-transparent" data-type="remove" data-field="medium"
-                (click)="addToCart($event)">
-                -
-              </button>
-              <input type="text" name="medium" style="width:15px" class="" value="0" min="0" max="1">
-              <button type="button" class="btn btn-sm bg-transparent" data-type="add" data-field="medium"
-                (click)="addToCart($event)">
-                +
-              </button>
-            </div>
-          </th>
-          <th scope="col ">Large ({{sizeOfPizza.large.price | currency:'USD' }})
-            <div class="btns">
-              <button type="button" class="btn btn-sm bg-transparent" data-type="remove" data-field="large"
-                (click)="addToCart($event)">
-                -
-              </button>
-              <input type="text" name="large" style="width:15px" class="" value="0" min="0" max="1">
-              <button type="button" class="btn btn-sm bg-transparent" data-type="add" data-field="large"
-                (click)="addToCart($event)">
-                +
-              </button>
-            </div>
-          </th>
-          <th scope="col ">Extra Large ({{sizeOfPizza.extraLarge.price | currency:'USD' }})
-            <div class="btns">
-              <button type="button" class="btn btn-sm bg-transparent" data-type="remove" data-field="extraLarge"
-                (click)="addToCart($event)">
-                -
-              </button>
-              <input type="text" name="extraLarge" style="width:15px" class="" value="0" min="0" max="1">
-              <button type="button" class="btn btn-sm bg-transparent" data-type="add" data-field="extraLarge"
-                (click)="addToCart($event)">
-                +
-              </button>
-            </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <th colspan="1">Veg Toppings</th>
-        </tr>
-        <tr *ngFor='let vegtop of pizzaToppings.vegToppings; let i = index'>
-          <td scope="row">
-            {{vegtop.topping}} ({{vegtop.price|currency:'USD'}})
-          </td>
-          <td [ngClass]="{'disabled': order.small.length<1}">
-            <label class="checkbox-outer">
-              <input id="{{'smallveg'+i}}" class="small-checkbox" type="checkbox" [value]="vegtop.price"
-                data-size="small" [disabled]="order.small.length<1" (click)="selectPizzaToppings($event, vegtop)">
-              <span class="checkmark"></span>
-            </label>
-          </td>
-          <td [ngClass]="{'disabled': order.medium.length<1}">
-            <label class="checkbox-outer">
-              <input id="{{'mediumveg'+i}}" class="medium-checkbox" type="checkbox" [value]="vegtop.price"
-                data-size="medium" [disabled]="order.medium.length<1" (click)="selectPizzaToppings($event, vegtop)">
-              <span class="checkmark"></span>
-            </label>
-          </td>
-          <td [ngClass]="{'disabled': order.large.length<1}">
-            <label class="checkbox-outer">
-              <input id="{{'largeveg'+i}}" class="large-checkbox" type="checkbox" [value]="vegtop.price"
-                data-size="large" [disabled]="order.large.length<1" (click)="selectPizzaToppings($event, vegtop)">
-              <span class="checkmark"></span>
-            </label>
-          </td>
-          <td [ngClass]="{'disabled': order.extraLarge.length<1}">
-            <label class="checkbox-outer">
-              <input id="{{'extraLargeveg'+i}}" class="extraLarge-checkbox" type="checkbox" [value]="vegtop.price"
-                data-size="extraLarge" [disabled]="order.extraLarge.length<1"
-                (click)="selectPizzaToppings($event, vegtop)">
-              <span class="checkmark"></span>
-            </label>
-          </td>
-        </tr>
-        <tr>
-          <th class="" colspan="1">Non Veg Toppings</th>
-        </tr>
-        <tr *ngFor='let nonvegtop of pizzaToppings.nonVegToppings; let i = index'>
-          <td scope="row">
-            {{nonvegtop.topping}} ({{nonvegtop.price|currency:'USD'}})
-          </td>
-          <td [ngClass]="{'disabled': order.small.length<1}">
-            <label class="checkbox-outer">
-              <input id="{{'smallnonveg'+i}}" class="small-checkbox" type="checkbox" [value]="nonvegtop.price" data-size="small"
-                [disabled]="order.small.length<1" (click)="selectPizzaToppings($event, nonvegtop)">
-              <span class="checkmark"></span>
-            </label>
-          </td>
-          <td [ngClass]="{'disabled': order.medium.length<1}">
-            <label class="checkbox-outer">
-              <input id="{{'mediumnonveg'+i}}" class="medium-checkbox" type="checkbox" [value]="nonvegtop.price" data-size="medium"
-                [disabled]="order.medium.length<1" (click)="selectPizzaToppings($event, nonvegtop)">
-              <span class="checkmark"></span>
-            </label>
-          </td>
-          <td [ngClass]="{'disabled': order.large.length<1}">
-            <label class="checkbox-outer">
-              <input id="{{'largenonveg'+i}}" class="large-checkbox" type="checkbox" [value]="nonvegtop.price" data-size="large"
-                [disabled]="order.large.length<1" (click)="selectPizzaToppings($event, nonvegtop)">
-              <span class="checkmark"></span>
-            </label>
-          </td>
-          <td [ngClass]="{'disabled': order.extraLarge.length<1}">
-            <label class="checkbox-outer">
-              <input id="{{'extraLargenonveg'+i}}" class="extraLarge-checkbox" type="checkbox" [value]="nonvegtop.price" data-size="extraLarge"
-                [disabled]="order.extraLarge.length<1" (click)="selectPizzaToppings($event, nonvegtop)">
-              <span class="checkmark"></span>
-            </label>
-          </td>
-        </tr>
-        <tr>
-          <th class="total" colspan="1">Total</th>
-        </tr>
-        <tr>
-          <th colspan="1">Offer</th>
-          <td>{{promoOfferOne}}</td>
-          <td>{{promoOfferTwo}}</td>
-          <td>{{promoOfferThree}}</td>
-          <td></td>
-        </tr>
-        <tr>
-          <th>
-          </th>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <div id="bigdiv" class="card-container">
-    <div class="card borderFontStyle">
-      Promotional Offers
+  <div class="col" style="width: 100%;">
+    <div class="col1" style="width: 60%; float:left">
+      <table class="table table-bordered" style="width: 95%;">
+        <thead>
+          <tr>
+            <th scope="col">
+              Toppings
+            </th>
+            <th scope="col" style="border-right: white; align-self: center;">
+              Pizza Size
+            </th>
+          </tr>
+          <tr>
+            <th></th>
+            <th scope="col ">Small ({{sizeOfPizza.small.price | currency:'USD' }})
+              <div class="btns">
+                <button type="button" class="btn btn-sm bg-transparent" data-type="remove" data-field="small"
+                  (click)="addToCart($event)">
+                  -
+                </button>
+                <input type="text" name="small" style="width:15px" class="" value="0" min="0" max="1">
+                <button type="button" class="btn btn-sm bg-transparent" data-type="add" data-field="small"
+                  (click)="addToCart($event)">
+                  +
+                </button>
+              </div>
+            </th>
+            <th scope="col ">Medium ({{sizeOfPizza.medium.price | currency:'USD' }})
+              <div class="btns">
+                <button type="button" class="btn btn-sm bg-transparent" data-type="remove" data-field="medium"
+                  (click)="addToCart($event)">
+                  -
+                </button>
+                <input type="text" name="medium" style="width:15px" class="" value="0" min="0" max="2">
+                <button type="button" class="btn btn-sm bg-transparent" data-type="add" data-field="medium"
+                  (click)="addToCart($event)">
+                  +
+                </button>
+              </div>
+            </th>
+            <th scope="col ">Large ({{sizeOfPizza.large.price | currency:'USD' }})
+              <div class="btns">
+                <button type="button" class="btn btn-sm bg-transparent" data-type="remove" data-field="large"
+                  (click)="addToCart($event)">
+                  -
+                </button>
+                <input type="text" name="large" style="width:15px" class="" value="0" min="0" max="1">
+                <button type="button" class="btn btn-sm bg-transparent" data-type="add" data-field="large"
+                  (click)="addToCart($event)">
+                  +
+                </button>
+              </div>
+            </th>
+            <th scope="col ">Extra Large ({{sizeOfPizza.extraLarge.price | currency:'USD' }})
+              <div class="btns">
+                <button type="button" class="btn btn-sm bg-transparent" data-type="remove" data-field="extraLarge"
+                  (click)="addToCart($event)">
+                  -
+                </button>
+                <input type="text" name="extraLarge" style="width:15px" class="" value="0" min="0" max="1">
+                <button type="button" class="btn btn-sm bg-transparent" data-type="add" data-field="extraLarge"
+                  (click)="addToCart($event)">
+                  +
+                </button>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th colspan="1">Veg Toppings</th>
+          </tr>
+          <tr *ngFor='let vegtop of pizzaToppings.vegToppings; let i = index'>
+            <td scope="row">
+              {{vegtop.topping}} ({{vegtop.price|currency:'USD'}})
+            </td>
+            <td [ngClass]="{'disabled': order.small.length<1}">
+              <label class="checkbox-outer">
+                <input id="{{'smallveg'+i}}" class="small-checkbox" type="checkbox" [value]="vegtop.price"
+                  data-size="small" [disabled]="order.small.length<1" (click)="selectPizzaToppings($event, vegtop)">
+                <span class="checkmark"></span>
+              </label>
+            </td>
+            <td [ngClass]="{'disabled': order.medium.length<1}">
+              <label class="checkbox-outer">
+                <input id="{{'mediumveg'+i}}" class="medium-checkbox" type="checkbox" [value]="vegtop.price"
+                  data-size="medium" [disabled]="order.medium.length<1" (click)="selectPizzaToppings($event, vegtop)">
+                <span class="checkmark"></span>
+              </label>
+            </td>
+            <td [ngClass]="{'disabled': order.large.length<1}">
+              <label class="checkbox-outer">
+                <input id="{{'largeveg'+i}}" class="large-checkbox" type="checkbox" [value]="vegtop.price"
+                  data-size="large" [disabled]="order.large.length<1" (click)="selectPizzaToppings($event, vegtop)">
+                <span class="checkmark"></span>
+              </label>
+            </td>
+            <td [ngClass]="{'disabled': order.extraLarge.length<1}">
+              <label class="checkbox-outer">
+                <input id="{{'extraLargeveg'+i}}" class="extraLarge-checkbox" type="checkbox" [value]="vegtop.price"
+                  data-size="extraLarge" [disabled]="order.extraLarge.length<1"
+                  (click)="selectPizzaToppings($event, vegtop)">
+                <span class="checkmark"></span>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <th class="" colspan="1">Non Veg Toppings</th>
+          </tr>
+          <tr *ngFor='let nonvegtop of pizzaToppings.nonVegToppings; let i = index'>
+            <td scope="row">
+              {{nonvegtop.topping}} ({{nonvegtop.price|currency:'USD'}})
+            </td>
+            <td [ngClass]="{'disabled': order.small.length<1}">
+              <label class="checkbox-outer">
+                <input id="{{'smallnonveg'+i}}" class="small-checkbox" type="checkbox" [value]="nonvegtop.price"
+                  data-size="small" [disabled]="order.small.length<1" (click)="selectPizzaToppings($event, nonvegtop)">
+                <span class="checkmark"></span>
+              </label>
+            </td>
+            <td [ngClass]="{'disabled': order.medium.length<1}">
+              <label class="checkbox-outer">
+                <input id="{{'mediumnonveg'+i}}" class="medium-checkbox" type="checkbox" [value]="nonvegtop.price"
+                  data-size="medium" [disabled]="order.medium.length<1"
+                  (click)="selectPizzaToppings($event, nonvegtop)">
+                <span class="checkmark"></span>
+              </label>
+            </td>
+            <td [ngClass]="{'disabled': order.large.length<1}">
+              <label class="checkbox-outer">
+                <input id="{{'largenonveg'+i}}" class="large-checkbox" type="checkbox" [value]="nonvegtop.price"
+                  data-size="large" [disabled]="order.large.length<1" (click)="selectPizzaToppings($event, nonvegtop)">
+                <span class="checkmark"></span>
+              </label>
+            </td>
+            <td [ngClass]="{'disabled': order.extraLarge.length<1}">
+              <label class="checkbox-outer">
+                <input id="{{'extraLargenonveg'+i}}" class="extraLarge-checkbox" type="checkbox"
+                  [value]="nonvegtop.price" data-size="extraLarge" [disabled]="order.extraLarge.length<1"
+                  (click)="selectPizzaToppings($event, nonvegtop)">
+                <span class="checkmark"></span>
+              </label>
+            </td>
+          </tr>
+          <tr>
+            <th class="total" colspan="1">Total</th>
+          </tr>
+          <tr>
+            <th colspan="1">Offer</th>
+            <td>{{promoOfferOne}}</td>
+            <td>{{promoOfferTwo}}</td>
+            <td>{{promoOfferThree}}</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td>&nbsp;</td>
+            <td><span [innerHtml]="totalPriceAfterPromo(order.small, 'small', pizzaQuantity.small)"></span></td>
+            <td><span [innerHtml]="totalPriceAfterPromo(order.medium, 'medium', pizzaQuantity.medium)"></span> </td>
+            <td><span [innerHtml]="totalPriceAfterPromo(order.large, 'large', pizzaQuantity.large)"></span> </td>
+            <td><span
+                [innerHtml]="totalPriceAfterPromo(order.extraLarge, 'extraLarge', pizzaQuantity.extraLarge)"></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-    <div id="tooltip" class="card-block">
-      <ul class="list">
-        <li class="item card-container card borderFontStyle"><strong>Offer 1</strong> 1 Small Pizza with 2 toppings = $5
-        </li>
-        <li class="item card-container card borderFontStyle"><strong>Offer 2</strong> 2 Medium Pizza with 4 toppings
-          each = $9</li>
-        <li class="item card-container card borderFontStyle"><strong>Offer 3</strong> 1 Large Pizza with 4 toppings ( Peperoni
-          and Barbecue chicken are counted as 2 toppings)- 50% discount</li>
-      </ul>
+    <div class="col2" style="width: 40%; float:right">
+      <div class="card-container" style="width: 80%;" id="bigdiv">
+        <div class="card borderFontStyle">
+          Promotional Offers
+        </div>
+        <div id="tooltip" class="card-block">
+          <ul class="list">
+            <li class="item card-container card borderFontStyle"><strong>Offer 1</strong> 1 Medium Pizza with 2 toppings
+              = $5</li>
+            <li class="item card-container card borderFontStyle"><strong>Offer 2</strong> 2 Medium Pizza with 4 toppings
+              each = $9</li>
+            <li class="item card-container card borderFontStyle"><strong>Offer 3</strong>
+              <p style="font-size: xx-small;">1 Large Pizza with 4 toppings ( Peperoni
+                and Barbecue chicken are counted as 2 toppings)- 50% discount</p>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </div>

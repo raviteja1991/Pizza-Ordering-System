@@ -9,6 +9,9 @@ import * as $ from 'jquery';
 export class PizzaOrderComponent implements OnInit {
   constructor() { }
 
+  ngOnInit() {
+  }
+  
   sizeOfPizza: any = {
     small: {
       price: 5
@@ -65,8 +68,7 @@ export class PizzaOrderComponent implements OnInit {
     extraLarge: []
   };
 
-  ngOnInit() {
-  }
+  pizzaQuantity: any = { small: 0, medium: 0, large: 0, extraLarge: 0 };
 
   addToCart(e: { currentTarget: any; }) {
     let target = e.currentTarget;
@@ -107,15 +109,16 @@ export class PizzaOrderComponent implements OnInit {
           pizzaToppings: []
         });
       }
+      this.pizzaQuantity[size] = currentVal;
     } else {
       this.order[size].splice(0, 1);
       if (this.order[size].length == 0) {
         let checkVals = document.getElementsByClassName(size + '-checkbox');
-        console.log('checkVals', checkVals)
         Array.prototype.forEach.call(checkVals, function (cv, i) {
           cv.checked = false;
         });
       }
+      this.pizzaQuantity[size] = currentVal;
     }
   }
 
@@ -173,16 +176,96 @@ export class PizzaOrderComponent implements OnInit {
         if ('pizzaToppings' in promo3) {
           let topings = promo3.pizzaToppings;
           topings.forEach((toping: { name: string; }) => {
-            debugger;
             if (toping.name.toLowerCase() === 'pepperoni') pepporoni = true;
             if (toping.name.toLowerCase() === 'barbecue chicken') bbq = true;
           })
-          debugger;
           if (topings.length == 4 || (pepporoni && bbq)) {
-            this.promoOfferTwo = "Offer three - Applied";
+            this.promoOfferThree = "Offer three - Applied";
           } else { this.promoOfferThree = null; }
         }
       })
     } else { this.promoOfferThree = null; }
+  }
+
+  totalPriceAfterPromo(orderList: any, size: any, pizzaQuantity: any) {
+    let Total = 0, price: any, quantity = 0;
+
+    if (orderList.length > 0) {
+      switch (size) {
+        case 'small':
+          Total = Total + this.sizeOfPizza.small.price;
+          break;
+        case 'medium':
+          Total = Total + this.sizeOfPizza.medium.price;
+          break;
+        case 'large':
+          Total = Total + this.sizeOfPizza.large.price;
+          break;
+        case 'extraLarge':
+          Total = Total + this.sizeOfPizza.extraLarge.price;
+          break;
+        default:
+          Total = Total + 0;
+      }
+
+      orderList.forEach((element: { [x: string]: string; pizzaToppings: any; }, i: any) => {
+        quantity++;
+        if ('price' in element) {
+          price = parseFloat(element['price']);
+        }
+        let topings = 'pizzaToppings' in element ? element.pizzaToppings : [];
+        let pepperoni: any, peporoniPrice: any, bbq: any, bbqPrice: any, pepBBQPromo: any;
+        if (topings.length > 0) {
+          topings.forEach((topping: { name: string; price: string; }) => {
+            if (size == 'large') {
+              if (topping.name.toLowerCase() === 'pepperoni') {
+                peporoniPrice = parseFloat(topping.price);
+                pepperoni = true;
+              }
+              if (topping.name.toLowerCase() === 'barbecue chicken') {
+                bbqPrice = parseFloat(topping.price);
+                bbq = true;
+              }
+              Total = Total + parseFloat(topping.price);
+            } else {
+              Total = Total + parseFloat(topping.price);
+            }
+          });
+          if (size == 'large') {
+            pepBBQPromo = peporoniPrice + bbqPrice;
+            if (pepperoni && bbq) {
+              this.largeDiscount = (Total - (pepBBQPromo)) + (pepBBQPromo / 2);
+            } else if (topings.length == 4) {
+              this.largeDiscount = (Total / 2);
+            }
+          }
+        }
+      });
+      Total = Total + (price * (quantity - 1));
+    }
+
+    if (orderList.length > 0 && Total > 0) {
+      if (size == 'medium') {
+        if (this.promoOfferOne) {
+          this.smallDiscount = this.sizeOfPizza.small.price;
+          return `<b>Price: $${Total}</b> <br> <b>After Discount: $${this.smallDiscount.toFixed(2)} </b>`;
+        }
+        else if (this.promoOfferTwo) {
+          this.mediumDiscount = Number((9 * quantity).toFixed(2));
+          return `<b>Price: $${Total}</b> <br> <b>After Discount: $${this.mediumDiscount} </b>`;
+        } else {
+          return `<b> ${Total == 0 ? "" : '$' + Total.toFixed(2)} </b>`;
+        }
+      }
+      else if (size == 'large' && this.promoOfferThree) {
+        return `<b>Price: $${Total}</b> <br> <b>After Discount: $${this.largeDiscount} </b>`;
+      }
+      else {
+        return `<b> ${Total == 0 ? "" : '$' + Total.toFixed(2)} </b>`;
+      }
+    }
+    else {
+      return `<b> ${Total == 0 ? "" : '$' + Total.toFixed(2)} </b>`;
+    }
   }
 }
